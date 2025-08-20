@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiran Marathe - QA Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 400px;
+            height: 250px;
+        }
+
+        .business-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card-container:hover .business-card {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .designation {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-size: 14px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .contact-info .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .skills {
+            margin-top: 20px;
+        }
+
+        .skills h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 30%;
+            right: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .download-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-hint {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 500px) {
+            .card-container {
+                width: 350px;
+                height: 220px;
+            }
+            
+            .card-face {
+                padding: 20px;
+            }
+            
+            .name {
+                font-size: 20px;
+            }
+            
+            .profile-pic {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="main-container">
+        <div class="card-container">
+            <div class="business-card">
+                <!-- Front of the card -->
+                <div class="card-face card-front">
+                    <div class="profile-pic">KM</div>
+                    <div class="name">Kiran Marathe</div>
+                    <div class="designation">QA Engineer</div>
+                    <div class="company">Vagaro Technologies</div>
+                </div>
+
+                <!-- Back of the card -->
+                <div class="card-face card-back">
+                    <ul class="contact-info">
+                        <li>
+                            <div class="icon">📧</div>
+                            <span>marathekiran159@gmail.com</span>
+                        </li>
+                        <li>
+                            <div class="icon">📱</div>
+                            <span>+91 9875067199</span>
+                        </li>
+                        <li>
+                            <div class="icon">💼</div>
+                            <span>linkedin.com/in/kiran-marathe-qamanual/</span>
+                        </li>
+                        <li>
+                            <div class="icon">🌐</div>
+                            <span>github.com/Marathe159/MaratheKiran</span>
+                        </li>
+                    </ul>
+
+                    <div class="skills">
+                        <h3>Expertise</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Test Automation</span>
+                            <span class="skill-tag">API Testing</span>
+                            <span class="skill-tag">Bug Tracking</span>
+                            <span class="skill-tag">Cypress</span>
+                            <span class="skill-tag">Agile Testing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-hint">
+            ✨ Hover over the card to see contact details ✨
+        </div>
+
+        <div class="download-section">
+            <button class="download-btn" onclick="downloadVCard()">
+                📥 Save Contact
+            </button>
+            <div id="fallback-options" style="display: none; margin-top: 15px;">
+                <p style="color: rgba(255,255,255,0.8); font-size: 12px; margin-bottom: 10px;">
+                    Having trouble? Try these alternatives:
+                </p>
+                <button class="download-btn" onclick="downloadVCardFile(createVCard())" style="font-size: 12px; padding: 8px 20px;">
+                    📄 Download Contact File
+                </button>
+                <button class="download-btn" onclick="showContactDetails()" style="font-size: 12px; padding: 8px 20px; margin-left: 10px;">
+                    📋 Show Details
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadVCard() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Kiran Marathe
+ORG:Vagaro Technologies
+TITLE:QA Engineer
+EMAIL:marathekiran159@gmail.com
+TEL:+919875067199
+URL:https://www.linkedin.com/in/kiran-marathe-qamanual/
+NOTE:QA Engineer at Vagaro Technologies specializing in Test Automation, API Testing, Bug Tracking, Selenium, and Agile Testing
+END:VCARD`;
+
+            // Check if device supports native contact saving
+            if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+                // iOS - Multiple approaches for better compatibility
+                
+                // Method 1: Try data URI approach (works in Safari)
+                const dataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+                const iOSLink = document.createElement('a');
+                iOSLink.href = dataUri;
+                iOSLink.download = 'Kiran_Marathe_Contact.vcf';
+                iOSLink.target = '_blank';
+                
+                // Create invisible button and trigger click
+                iOSLink.style.display = 'none';
+                document.body.appendChild(iOSLink);
+                
+                // Try to trigger download
+                if (iOSLink.click) {
+                    iOSLink.click();
+                } else {
+                    // Fallback for older iOS
+                    const clickEvent = document.createEvent('MouseEvents');
+                    clickEvent.initEvent('click', true, true);
+                    iOSLink.dispatchEvent(clickEvent);
+                }
+                
+                document.body.removeChild(iOSLink);
+                
+                // Show instruction for iOS users
+                showSuccessMessage('Tap the download icon in Safari, then tap the vCard file to add to Contacts!');
+                
+                // Show fallback options after 3 seconds if needed
+                setTimeout(() => {
+                    document.getElementById('fallback-options').style.display = 'block';
+                }, 3000);
+                
+            } else if (navigator.userAgent.match(/Android/i)) {
+                // Android - Try multiple methods
+                
+                // Method 1: Try Android Intent (works on most Android browsers)
+                const androidIntent = `intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Kiran Marathe;S.phone=+919875067199;S.email=marathekiran159@gmail.com;S.organization=Vagaro Technologies;S.title=QA Engineer;end`;
+                
+                // Method 2: Alternative intent format
+                const altIntent = `intent://add/#Intent;scheme=content;package=com.android.contacts;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name=Kiran Marathe;S.phone=+919875067199;S.email=marathekiran159@gmail.com;S.organization=Vagaro Technologies;end`;
+                
+                let intentWorked = false;
+                
+                try {
+                    // First, try to open contacts app directly
+                    window.location.href = androidIntent;
+                    intentWorked = true;
+                    showSuccessMessage('Opening Contacts app to add Kiran Marathe...');
+                } catch (e1) {
+                    try {
+                        // Try alternative intent
+                        window.location.href = altIntent;
+                        intentWorked = true;
+                        showSuccessMessage('Opening Contacts app to add Kiran Marathe...');
+                    } catch (e2) {
+                        intentWorked = false;
+                    }
+                }
+                
+                // If intents don't work, show fallback options
+                setTimeout(() => {
+                    if (!intentWorked) {
+                        document.getElementById('fallback-options').style.display = 'block';
+                        showSuccessMessage('Need help adding contact? Try the options below.');
+                    }
+                }, 2000);
+                
+            } else {
+                // Desktop/Other browsers - Download vCard file
+                downloadVCardFile(vcard);
+                showSuccessMessage('Contact file downloaded! Double-click to add to your contacts app.');
+            }
+        }
+
+        function createVCard() {
+            return `BEGIN:VCARD
+VERSION:3.0
+FN:Kiran Marathe
+ORG:Vagaro Technologies
+TITLE:QA Engineer
+EMAIL:marathekiran159@gmail.com
+TEL:+919875067199
+URL:https://www.linkedin.com/in/kiran-marathe-qamanual/
+NOTE:QA Engineer at Vagaro Technologies specializing in Test Automation, API Testing, Bug Tracking, Selenium, and Agile Testing
+END:VCARD`;
+        }
+
+        function showContactDetails() {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.background = 'rgba(0,0,0,0.8)';
+            modal.style.zIndex = '2000';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.padding = '20px';
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; width: 100%;">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">Contact Details</h3>
+                    <div style="space-y: 10px; color: #333;">
+                        <p><strong>Name:</strong> Kiran Marathe</p>
+                        <p><strong>Title:</strong> QA Engineer</p>
+                        <p><strong>Company:</strong> Vagaro Technologies</p>
+                        <p><strong>Email:</strong> marathekiran159@gmail.com</p>
+                        <p><strong>Phone:</strong> +91 9875067199</p>
+                        <p><strong>LinkedIn:</strong> linkedin.com/in/kiran-marathe-qamanual/</p>
+                        <p><strong>GitHub:</strong> github.com/Marathe159/MaratheKiran</p>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #2c3e50; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+                            Close
+                        </button>
+                    </div>
+                    <p style="font-size: 12px; color: #666; text-align: center; margin-top: 15px;">
+                        Copy these details manually to add to your contacts
+                    </p>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        function downloadVCardFile(vcard) {
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Kiran_Marathe_Contact.vcf';
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            showSuccessMessage('Contact file downloaded! Open it to add to your contacts.');
+        }
+
+        function showSuccessMessage(message) {
+            // Create and show success notification
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '25px';
+            notification.style.boxShadow = '0 5px 15px rgba(76, 175, 80, 0.3)';
+            notification.style.zIndex = '1000';
+            notification.style.fontSize = '14px';
+            notification.style.maxWidth = '90%';
+            notification.style.textAlign = 'center';
+            notification.innerHTML = `✅ ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(-20px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Add click interaction for mobile
+        document.querySelector('.business-card').addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+
+        // Add CSS for mobile flip
+        const style = document.createElement('style');
+        style.textContent = `
+            .business-card.flipped {
+                transform: rotateY(180deg);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add some interactive particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = 'rgba(255,255,255,0.6)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            particle.style.zIndex = '-1';
+            
+            document.body.appendChild(particle);
+            
+            const duration = Math.random() * 3000 + 2000;
+            particle.animate([
+                { transform: 'translateY(0px)', opacity: 1 },
+                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            }).onfinish = () => particle.remove();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 500);
+    </script>
+</body>
+</html>
